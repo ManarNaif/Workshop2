@@ -1,18 +1,18 @@
 {
-  "name": "SE2",
+  "name": "workShop2",
   "version": "1.0.0",
+  "description": "",
   "main": "index.js",
-  "dependencies": {
-    "cors": "^2.8.5",
-    "express": "^4.17.1",
-    "node-fasttext": "^1.0.0-alpha.1"
-  },
-  "devDependencies": {},
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
-  "description": ""
+  "dependencies": {
+   
+    "express": "^4.17.1",
+    "fasttext": "^1.0.0",
+    "path": "^0.12.7"
+  }
 }
