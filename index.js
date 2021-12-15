@@ -1,15 +1,26 @@
 const express = require('express')
 const app = express();
-var FastText = require('node-fasttext');
-const cors = require('cors');
+const path = require('path');
+var FastText = require('fasttext');
+const res = require('express/lib/response');
+const req = require('express/lib/request');
+app.use(express.static('public'));
+app.use(express.json({limit: '1000mb'}));
+app.listen(8000, () => {
+  console.log('Listening on port 8000!')
+});
 
-let config = { 
-  dim: 100,
-  input: "train.txt",
-  output: "model"
+let data = path.resolve(path.join(__dirname, 'train.txt'));
+let model = path.resolve(path.join(__dirname, 'model'))
+let options  = { 
+  input: data,
+  output: model,
+  loss: "softmax",
+  dim: 200,
+  bucket: 2000000
 }
-
-FastText.train("supervised", config, function (success, error) {
+let classifier = new FastText.Classifier();
+classifier.train('supervised', options , function (success, error) {
 
   if(error) {
     console.log(error)
@@ -20,33 +31,22 @@ FastText.train("supervised", config, function (success, error) {
   
 })
 
-app.use(cors())
+app.post('/api', async (req, res) => {
+  const statement = req.body.Getvalue;
+  const name = await getFastTextResults(statement);
+  var values = "";
+  name.forEach(resault => {
+                    values += resault.label.replace('__label__','') + "\n";
+            })
+    
+    res.json({values});
+  
 
-app.get('/', (req, res) => {
-  res.sendfile("index.html");
-});
-
-app.get('/fasttext/', function(req, res) {
-  var statement = req.param('statement');
-    res.send(getFastTextResults(statement));
+ 
 });
 
 function getFastTextResults(statement) {
-	//predict returns an array with the input and predictions for best cateogires
-	FastText.predict(
-		"model.bin", 3,
-		[statement],
-		function (success, error) {
-
-		  if(error) {
-			console.log(error)
-			return;
-		  }
-		  console.log(success)
-		})
-	return "success!";
+  return classifier.predict(statement, 5)
+  
 }
 
-app.listen(8000, () => {
-  console.log('Listening on port 8000!')
-});
