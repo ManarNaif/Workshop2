@@ -6,7 +6,7 @@
   "scripts": {
     "test": "jest", 
     "lint": "eslint '**/*.js'",
-    "test:coveralls": "jest --coverage && cat ./coverage/lcov.info | ./node_modules/coveralls/bin/coveralls.js && rm -rf ./coverage"
+    "test:coveralls": "jest --converage --coverageReporters=text-lcov | coveralls"
   },
   "keywords": [],
   "author": "",
