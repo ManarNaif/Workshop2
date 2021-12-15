@@ -1,9 +1,7 @@
-const express = require('express')
+const express = require('express');
 const app = express();
 const path = require('path');
 var FastText = require('fasttext');
-const res = require('express/lib/response');
-const req = require('express/lib/request');
 app.use(express.static('public'));
 app.use(express.json({limit: '1000mb'}));
 app.listen(8000, () => {
@@ -37,6 +35,7 @@ app.post('/api', async (req, res) => {
   var values = "";
   name.forEach(resault => {
                     values += resault.label.replace('__label__','') + "\n";
+                   
             })
     
     res.json({values});
@@ -45,7 +44,10 @@ app.post('/api', async (req, res) => {
  
 });
 
+
+
 function getFastTextResults(statement) {
+	//predict returns an array with the input and predictions for best cateogires
   return classifier.predict(statement, 5)
   
 }
