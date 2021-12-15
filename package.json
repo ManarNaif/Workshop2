@@ -6,7 +6,7 @@
   "scripts": {
     "test": "jest", 
     "lint": "eslint '**/*.js'",
-    "test:coveralls": "node --harmony_proxies node_modules/.bin/jest --coverage && cat ./coverage/lcov.info | ./node_modules/coveralls/bin/coveralls.js"
+    "test:coveralls": "npx jest --coverage && cat ./coverage/lcov.info | npx coveralls"
   },
   "keywords": [],
   "author": "",
